@@ -1,5 +1,5 @@
-import {StyleSheet} from 'react-native';
-import {bg_grey} from './../../helper/colors';
+import { StyleSheet } from 'react-native';
+import { BORDER, BG_GREY } from './../../helper/colors';
 
 export default StyleSheet.create({
   container: {
@@ -9,7 +9,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-evenly',
-    borderColor: '#00FFC2',
+    borderColor: BORDER,
     height: 50,
     borderWidth: 1,
     borderRadius: 42,
@@ -21,7 +21,7 @@ export default StyleSheet.create({
     fontSize: 22,
     marginBottom: 7,
     marginLeft: 14,
-    color: bg_grey,
+    color: BG_GREY,
   },
 
   imagePriority: {

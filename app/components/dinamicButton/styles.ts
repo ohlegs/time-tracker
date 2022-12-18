@@ -1,15 +1,17 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
+import { TRANSPARENT, DEFAULT_BUTTON } from '../../helper/colors';
+
 export default StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginLeft: '15.07%',
+    justifyContent: 'space-evenly',
     width: '100%',
   },
   circleMainButton: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#00FFC2',
+    backgroundColor: DEFAULT_BUTTON,
     paddingVertical: 24,
     paddingHorizontal: 20,
     width: 79,
@@ -28,8 +30,7 @@ export default StyleSheet.create({
     width: 54,
     height: 54,
     padding: 14,
-    backgroundColor: 'rgba(255, 0, 0, 0.24);',
+    backgroundColor: TRANSPARENT,
     borderRadius: 54 / 2,
-    marginRight: 48,
   },
 });

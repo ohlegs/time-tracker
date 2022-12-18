@@ -1,4 +1,6 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
+import { WHITE } from '../../helper/colors';
+
 export default StyleSheet.create({
   container: {
     flexDirection: 'row',
@@ -9,7 +11,7 @@ export default StyleSheet.create({
   time: {
     fontSize: 45,
     lineHeight: 53,
-    color: '#FFFFFF',
+    color: WHITE,
     fontWeight: '600',
   },
 });

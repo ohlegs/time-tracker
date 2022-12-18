@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { DEFAULT_BUTTON, BG_MAIN, TRANSPARENT, NAV_BAR_BG_COLOR } from '../helper/colors';
+import { DEFAULT_BUTTON, NAV_BAR_BG_COLOR, BG_MAIN, TRANSPARENT } from '../../helper/colors';
 
 export default StyleSheet.create({
   main: {

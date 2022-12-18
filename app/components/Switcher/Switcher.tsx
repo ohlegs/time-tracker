@@ -1,32 +1,20 @@
-import {View, Text, Image, TouchableOpacity} from 'react-native';
-import React, {useState, useEffect} from 'react';
-import {
-  decrement,
-  increment,
-  selectCount,
-} from '../../helper/redux/counterSlice';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
 import styles from './styles';
-import {hot_priority, low_priority, normal_priority} from '../../helper/path';
-import {bg_grey} from './../../helper/colors';
-import {useDispatch, useSelector} from 'react-redux';
+import { hot_priority, low_priority, normal_priority } from '../../helper/path';
+import { BG_GREY } from './../../helper/colors';
 
 export default function Switcher() {
-  const [select, setSelect] = useState<Number | null>();
-  const [incrementAmount, setIncrementAmount] = useState('2');
-  const count = useSelector(selectCount);
-  useEffect(() => {
-    console.log('123');
-  }, [count]);
-  const dispatch = useDispatch();
-  const handlePress = index => {
-    dispatch(increment());
-    if (index === 'low') {
+  const [select, setSelect] = useState<number | null>();
+  const count = 0;
+  const handlePress = (priority: string) => {
+    if (priority === 'low') {
       setSelect(1);
     }
-    if (index === 'normal') {
+    if (priority === 'normal') {
       setSelect(2);
     }
-    if (index === 'hot') {
+    if (priority === 'hot') {
       setSelect(3);
     }
   };
@@ -39,25 +27,37 @@ export default function Switcher() {
           onPress={() => handlePress('low')}
           style={[
             styles.bgImage,
-            {backgroundColor: select === 1 ? bg_grey : null},
-          ]}>
-          <Image style={styles.imagePriority} source={normal_priority} />
+            select === 1 ? { backgroundColor: BG_GREY } : null,
+          ]}
+        >
+          <Image
+            source={normal_priority}
+            style={styles.imagePriority}
+          />
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => handlePress('normal')}
           style={[
             styles.bgImage,
-            {backgroundColor: select === 2 ? bg_grey : null},
-          ]}>
-          <Image style={styles.imagePriority} source={low_priority} />
+            select === 2 ? { backgroundColor: BG_GREY } : null,
+          ]}
+        >
+          <Image
+            source={low_priority}
+            style={styles.imagePriority}
+          />
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => handlePress('hot')}
           style={[
             styles.bgImage,
-            {backgroundColor: select === 3 ? bg_grey : null},
-          ]}>
-          <Image style={styles.imagePriority} source={hot_priority} />
+            select === 3 ? { backgroundColor: BG_GREY } : null,
+          ]}
+        >
+          <Image
+            source={hot_priority}
+            style={styles.imagePriority}
+          />
         </TouchableOpacity>
       </View>
     </View>

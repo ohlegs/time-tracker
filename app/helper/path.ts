@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 export const icon_history = require('../assets/icon/history.png');
 export const icon_add = require('../assets/icon/cross_cancel.png');
 export const save = require('../assets/icon/check.png');

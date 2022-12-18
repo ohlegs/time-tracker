@@ -1,5 +1,6 @@
-import {View, Image, TouchableOpacity} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import { View, Image, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import styles from './styles';
 import {
   cross_cancel,
@@ -10,7 +11,8 @@ import {
   lock_close,
   lock_open,
 } from '../../helper/path';
-import {cancel, not_usable} from '../../helper/colors';
+import { cancel, not_usable } from '../../helper/colors';
+import { getColor } from '../../helper/redux/colorSlice';
 
 export default function DinamicButton() {
   const [currentMode, setCurrentMode] = useState('save');
@@ -19,6 +21,7 @@ export default function DinamicButton() {
     auxiliaryUnit: lock_open,
     auxiliaryUnitColor: not_usable,
   });
+  const color = useSelector(getColor).payload?.counter.value;
   useEffect(() => {
     if (currentMode === 'edit') {
       setCurrentStyle({
@@ -55,11 +58,12 @@ export default function DinamicButton() {
         disabled={true}
         style={[
           styles.auxiliaryUnit,
-          {backgroundColor: currentStyle.auxiliaryUnitColor},
-        ]}>
+          { backgroundColor: currentStyle.auxiliaryUnitColor },
+        ]}
+      >
         <Image
-          style={styles.circleButtonImage}
           source={currentStyle.auxiliaryUnit}
+          style={styles.circleButtonImage}
         />
       </TouchableOpacity>
 
@@ -68,9 +72,17 @@ export default function DinamicButton() {
           const arr = ['edit', 'save', 'pause', 'play'];
           setCurrentMode(arr[Math.floor(Math.random() * (3 - 0 + 1) + 0)]);
         }}
-        style={[styles.circleMainButton]}>
-        <Image style={styles.circleButtonImage} source={currentStyle.image} />
+        style={[
+          styles.circleMainButton,
+          color !== '' ? { backgroundColor: color } : null,
+        ]}
+      >
+        <Image
+          source={currentStyle.image}
+          style={styles.circleButtonImage}
+        />
       </TouchableOpacity>
+      <View style={styles.auxiliaryUnit} />
     </View>
   );
 }

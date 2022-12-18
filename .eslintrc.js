@@ -1,15 +1,14 @@
 module.exports = {
   root: true,
-  extends: '@react-native-community',
+  extends: 'vvdev/react-native',
   parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint'],
+  env: { jest: true },
   overrides: [
     {
-      files: ['*.ts', '*.tsx'],
+      files: ['app/redux/**/index.ts'],
       rules: {
-        '@typescript-eslint/no-shadow': ['error'],
-        'no-shadow': 'off',
-        'no-undef': 'off',
+        'no-param-reassign': ['error', { props: false }],
+        'react-hooks/exhaustive-deps': 'off',
       },
     },
   ],

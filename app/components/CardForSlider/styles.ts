@@ -1,8 +1,14 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
+
 export default StyleSheet.create({
   container: {
-    width: '100%',
-    height: '80%',
-    backgroundColor: 'green',
+    height: '100%',
+    marginHorizontal: 21,
+    borderWidth: 1,
+    paddingTop: 90,
+    paddingBottom: 21,
+    paddingLeft: 16,
+    paddingRight: 55,
+    borderRadius: 33,
   },
 });

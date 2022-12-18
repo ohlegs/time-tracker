@@ -1,4 +1,6 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
+import { BG_GREY, BORDER, WHITE } from '../../helper/colors';
+
 export default StyleSheet.create({
   container: {
     width: '100%',
@@ -7,13 +9,13 @@ export default StyleSheet.create({
     fontSize: 22,
     marginBottom: 7,
     marginLeft: 14,
-    color: 'rgba(255, 255, 255, 0.19)',
+    color: BG_GREY,
   },
   wrapperTextInput: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    borderColor: '#00FFC2',
+    borderColor: BORDER,
     height: 50,
     borderWidth: 1,
     borderRadius: 42,
@@ -35,7 +37,7 @@ export default StyleSheet.create({
     width: '90%',
     height: '100%',
     fontSize: 20,
-    color: '#ffffff',
+    color: WHITE,
   },
   pressebleImage: {},
   cancelImage: {
