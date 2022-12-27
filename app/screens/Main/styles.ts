@@ -20,7 +20,6 @@ export default StyleSheet.create({
     backgroundColor: bg_dinamicWrapper,
     marginHorizontal: 12,
     paddingHorizontal: 20,
-    paddingTop: 46,
     borderRadius: 42,
   },
   center: {

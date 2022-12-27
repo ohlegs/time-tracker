@@ -12,7 +12,7 @@ import styles from './styles';
 import HomeScreen from './../../screens/Main/Main';
 import { icon_add, icon_history } from '../../helper/path';
 import History from './../../screens/History/Main';
-import { getColor } from '../../helper/redux/colorSlice';
+import { DEFAULT_BUTTON } from '../../helper/colors';
 
 const Tab = createBottomTabNavigator();
 export default function NavBottomBar() {
@@ -22,7 +22,6 @@ export default function NavBottomBar() {
   const navigationRef = useNavigationContainerRef();
   const routeNameRef = useRef();
   const fadeAnim = useRef(new Animated.Value(0)).current;
-  const color = useSelector(getColor).payload.counter.value;
   const fadeOut = (value: number): void => {
     Animated.timing(fadeAnim, {
       toValue: value - 20,
@@ -42,7 +41,7 @@ export default function NavBottomBar() {
       fadeOut(positionHistory);
     }
   }, [currentPosition]);
-
+  const color = useSelector(state => state.color.color);
   return (
     <NavigationContainer
       onReady={() => {
@@ -70,7 +69,7 @@ export default function NavBottomBar() {
                         <Animated.View
                           style={[
                                     styles.animateCirles,
-                                    { left: fadeAnim, backgroundColor: color },
+                                    { left: fadeAnim, backgroundColor: color || DEFAULT_BUTTON },
                                 ]}
                         />
                         <BlurView

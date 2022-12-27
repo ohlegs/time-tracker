@@ -1,15 +1,21 @@
 import { View, Text, TextInput, Image, TouchableOpacity } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './styles';
 import { close } from './../../helper/path';
 
 interface Props {
   nameInput: string
   imagePlaceholder: any
+  callBack?: CallableFunction
 }
 
 export default function CustomInput(props: Props) {
   const [valueInput, setValueInput] = useState<string | null>(null);
+  useEffect(() => {
+    if (props.callBack) {
+      props.callBack(valueInput);
+    }
+  }, [valueInput]);
   return (
     <View style={styles.container}>
       <Text style={styles.inputName}>{props.nameInput}</Text>

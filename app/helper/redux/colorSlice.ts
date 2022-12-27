@@ -1,11 +1,11 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 export interface colorState {
-  value: string
+  color: string
 }
 
 const initialState: colorState = {
-  value: '',
+  color: '',
 };
 
 export const colorSlice = createSlice({
@@ -15,14 +15,12 @@ export const colorSlice = createSlice({
 
     setColor: (state, action: PayloadAction<string>) => {
       // eslint-disable-next-line
-      state.value = action.payload;
+      state.color = action.payload;
     },
 
-    getColor: state => (state.value),
   },
 });
 
-// Action creators are generated for each case reducer function
-export const { setColor, getColor } = colorSlice.actions;
+export const { setColor } = colorSlice.actions;
 
 export default colorSlice.reducer;

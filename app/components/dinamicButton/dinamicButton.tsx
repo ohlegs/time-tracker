@@ -12,50 +12,57 @@ import {
   lock_open,
 } from '../../helper/path';
 import { cancel, not_usable } from '../../helper/colors';
-import { getColor } from '../../helper/redux/colorSlice';
 
-export default function DinamicButton() {
-  const [currentMode, setCurrentMode] = useState('save');
+interface Props{
+  callBack: CallableFunction
+  mainButtonDisabled: boolean
+  auxiliaryUnit: (myArgument: string) => void
+}
+
+export default function DinamicButton(props:Props) {
+  const mode = useSelector(state => state?.mode.mode);
   const [currentStyle, setCurrentStyle] = useState({
     image: play,
     auxiliaryUnit: lock_open,
     auxiliaryUnitColor: not_usable,
   });
-  const color = useSelector(getColor).payload?.counter.value;
+  const color = useSelector(state => state?.color.color);
   useEffect(() => {
-    if (currentMode === 'edit') {
+    if (mode === 'edit') {
       setCurrentStyle({
         image: edit,
         auxiliaryUnit: cross_cancel,
         auxiliaryUnitColor: cancel,
       });
     }
-    if (currentMode === 'save') {
+    if (mode === 'save') {
       setCurrentStyle({
         image: save,
         auxiliaryUnit: cross_cancel,
         auxiliaryUnitColor: cancel,
       });
     }
-    if (currentMode === 'pause') {
+    if (mode === 'pause') {
       setCurrentStyle({
         image: pause,
         auxiliaryUnit: lock_close,
         auxiliaryUnitColor: not_usable,
       });
     }
-    if (currentMode === 'play') {
+    if (mode === 'play') {
       setCurrentStyle({
         image: play,
         auxiliaryUnit: lock_open,
         auxiliaryUnitColor: not_usable,
       });
     }
-  }, [currentMode]);
+  }, [mode]);
+  const handlePress = props.callBack;
   return (
     <View style={styles.container}>
       <TouchableOpacity
-        disabled={true}
+        disabled={props.mainButtonDisabled}
+        onPress={props.auxiliaryUnit}
         style={[
           styles.auxiliaryUnit,
           { backgroundColor: currentStyle.auxiliaryUnitColor },
@@ -68,14 +75,9 @@ export default function DinamicButton() {
       </TouchableOpacity>
 
       <TouchableOpacity
-        onPress={() => {
-          const arr = ['edit', 'save', 'pause', 'play'];
-          setCurrentMode(arr[Math.floor(Math.random() * (3 - 0 + 1) + 0)]);
-        }}
-        style={[
-          styles.circleMainButton,
-          color !== '' ? { backgroundColor: color } : null,
-        ]}
+        disabled={props.mainButtonDisabled}
+        onPress={handlePress}
+        style={props.mainButtonDisabled ? [styles.circleMainButton, { backgroundColor: '#2C77667A' }] : [styles.circleMainButton, { backgroundColor: color }]}
       >
         <Image
           source={currentStyle.image}
