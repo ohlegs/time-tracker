@@ -18,7 +18,7 @@ module.exports = {
     'react-native/no-raw-text': 'off',
     'no-unused-expressions': 'off',
     'linebreak-style': 0,
-    'no-shadow': ['error', { builtinGlobals: false, hoist: 'functions', allow: ['state', 'frame'] }],
+    'no-shadow': 'off',
     'no-use-before-define': ['error', { functions: false, classes: false, variables: false }],
     'react-hooks/exhaustive-deps': 'off',
   },

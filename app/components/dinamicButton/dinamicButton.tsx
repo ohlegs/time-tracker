@@ -28,6 +28,39 @@ export default function DinamicButton(props:Props) {
   });
   const color = useSelector(state => state?.color.color);
   useEffect(() => {
+    switch (true) {
+      case mode === 'edit': setCurrentStyle({
+        image: edit,
+        auxiliaryUnit: cross_cancel,
+        auxiliaryUnitColor: cancel,
+      });
+        break;
+      case mode === 'save': setCurrentStyle({
+        image: save,
+        auxiliaryUnit: cross_cancel,
+        auxiliaryUnitColor: cancel,
+      });
+        break;
+      case mode === 'update': setCurrentStyle({
+        image: save,
+        auxiliaryUnit: cross_cancel,
+        auxiliaryUnitColor: cancel,
+      });
+        break;
+      case mode === 'pause': setCurrentStyle({
+        image: pause,
+        auxiliaryUnit: lock_close,
+        auxiliaryUnitColor: not_usable,
+      });
+        break;
+      case mode === 'play': setCurrentStyle({
+        image: play,
+        auxiliaryUnit: lock_open,
+        auxiliaryUnitColor: not_usable,
+      });
+        break;
+    }
+
     if (mode === 'edit') {
       setCurrentStyle({
         image: edit,
@@ -36,6 +69,13 @@ export default function DinamicButton(props:Props) {
       });
     }
     if (mode === 'save') {
+      setCurrentStyle({
+        image: save,
+        auxiliaryUnit: cross_cancel,
+        auxiliaryUnitColor: cancel,
+      });
+    }
+    if (mode === 'update') {
       setCurrentStyle({
         image: save,
         auxiliaryUnit: cross_cancel,

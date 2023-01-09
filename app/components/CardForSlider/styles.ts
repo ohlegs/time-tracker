@@ -11,4 +11,9 @@ export default StyleSheet.create({
     paddingRight: 55,
     borderRadius: 33,
   },
+  srollView: {
+    width: '100%',
+    height: '100%',
+  },
+
 });

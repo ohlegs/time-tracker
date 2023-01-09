@@ -29,7 +29,7 @@ export default StyleSheet.create({
     height: '100%',
     width: '100%',
     overflow: 'hidden',
-    borderRadius: 42,
+    borderRadius: 20,
   },
 
   animateCirles: {
@@ -62,6 +62,6 @@ export default StyleSheet.create({
     top: '45%',
     width: 20,
     height: 20,
-    transform: [{ rotate: '45deg' }],
+    // transform: [{ rotate: '45deg' }],
   },
 });

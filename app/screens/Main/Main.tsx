@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-
 import { View, Animated, StatusBar, Dimensions } from 'react-native';
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import Carousel from 'react-native-snap-carousel';
@@ -21,14 +20,17 @@ import DBController, {
 } from '../../helper/db/db';
 import { setMode } from '../../helper/redux/modeSlice';
 import generateColor from '../../helper/utils/utils';
+import DatePikcer from '../../components/DataPicker/DataPicker';
 
-export default function HomeScreen() {
+function HomeScreen() {
   const mode = useSelector(state => state?.mode.mode);
   const [remove, setRemove] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [mainInput, setMainInput] = useState<string>('');
   const [description, setDescription] = useState<string>('');
-  const [prioriti, setPrioriti] = useState<number>(0);
+  const [priority, setPriority] = useState<number>(0);
+  // eslint-disable-next-line
+  const [date, setDate] = useState<number>();
   const [data, setData] = useState([]);
   const sliderWidth = Dimensions.get('window').width;
   const height = useRef(new Animated.Value(0)).current;
@@ -38,9 +40,9 @@ export default function HomeScreen() {
 
   const dispatch = useDispatch();
 
-  const showCarousel = (): void => {
+  const showCarousel = (toValue: number): void => {
     Animated.timing(opacityCarousel, {
-      toValue: 1,
+      toValue,
       duration: 100,
       delay: 100,
       useNativeDriver: false,
@@ -52,54 +54,91 @@ export default function HomeScreen() {
       duration: 300,
       delay: 300,
       useNativeDriver: false,
-    }).start(() => {
-      Animated.timing(height, {
-        toValue: 10,
-        duration: 300,
-        delay: 500,
-        useNativeDriver: false,
-      }).start(() => {
-        setRemove(false);
-        showCarousel();
-      });
+    }).start(({ finished }) => {
+      if (finished) {
+        Animated.timing(height, {
+          toValue: 10,
+          duration: 300,
+          delay: 500,
+          useNativeDriver: false,
+        }).start(({ finished }) => {
+          if (finished) {
+            setRemove(false);
+            showCarousel(1);
+          }
+        });
+      };
     });
+  };
+
+  const fadeOut = (): void => {
+    Animated.timing(height, {
+      toValue: 0,
+      duration: 300,
+      delay: 300,
+      useNativeDriver: false,
+    }).start(({ finished }) => {
+      if (finished) {
+        Animated.timing(opacityCarousel, {
+          toValue: 0,
+          duration: 100,
+          delay: 100,
+          useNativeDriver: false,
+        }).start(() => {
+          Animated.timing(opacity, {
+            toValue: 1,
+            duration: 300,
+            delay: 300,
+            useNativeDriver: false,
+          }).start();
+        });
+      }
+    });
+  };
+  const getDataById = () => {
+    setMainInput(data[currentIndex]?.main_input);
+    setDescription(data[currentIndex]?.description);
+    setPriority(data[currentIndex]?.priority);
   };
 
   const functionForDinamicButton = useCallback(() => {
     if (mode === 'save') {
-      for (let i = 0; i < 100; i++) {
-        DBController.insertDB([MAIN_INPUT, DESCRIPTION, PRIORITY, COLOR], [mainInput, description, prioriti, generateColor()]);
-      }
+      DBController.insertDB([MAIN_INPUT, DESCRIPTION, PRIORITY, COLOR], [mainInput, description, priority, generateColor()]);
       fadeIn();
-      setMainInput('');
-      setDescription('');
-      setPrioriti(0);
       DBController.checkDB(setData);
     }
-  }, [mode]);
+
+    if (mode === 'edit') {
+      setRemove(true);
+      fadeOut();
+      getDataById();
+      dispatch(setMode('update'));
+    }
+
+    if (mode === 'update') {
+      DBController.updateByIdDB([`"${MAIN_INPUT}"`, `"${DESCRIPTION}"`, `"${PRIORITY}"`], [`"${mainInput}"`, `"${description}"`, `"${priority}"`], currentIndex + 1);
+      DBController.getDB(setData);
+      fadeIn();
+    }
+  }, [mode, currentIndex, mainInput, description, priority]);
 
   const auxiliaryUnit = useCallback(() => {
     if (mode === 'save') {
       setDescription('');
       setMainInput('');
-      setPrioriti(0);
+      setPriority(0);
     }
   }, [mode]);
-  useEffect(() => {
-    if (!mainInput || !description || !prioriti) {
-      dispatch(setMode('save'));
-    }
-  }, [mainInput, description, prioriti]);
-
-  useEffect(() => {
-    DBController.checkDB(setData);
-  }, []);
 
   useEffect(() => {
     if (data?.length > 0) {
       dispatch(setColor(data[currentIndex]?.color));
     }
   }, [currentIndex]);
+
+  useEffect(() => {
+    DBController.checkDB(setData);
+  }, []);
 
   useEffect(() => {
     if (data?.length > 0) {
@@ -118,31 +157,39 @@ export default function HomeScreen() {
             callBack={(value: string) => {
                             setMainInput(value);
                         }}
+            clearButtonMode={true}
             imagePlaceholder={main_text}
-            nameInput='Main input'
+            label='Main input'
             value={mainInput}
-          />
-        </View>
-        <View style={styles.formWrapper}>
-          <CustomInput
-            callBack={(value: string) => {
-                            setDescription(value);
-                        }}
-            imagePlaceholder={description_img}
-            nameInput='Description'
-            value={description}
           />
         </View>
         <View style={styles.formWrapper}>
           <Switcher
             callBack={(value: number) => {
-                            setPrioriti(value);
+                            setPriority(value);
                         }}
+            styleContainer={styles.switcher}
+            value={priority}
+          />
+          <DatePikcer styleContainer={styles.dataPicker} />
+        </View>
+        <View style={[styles.formWrapper, { alignItems: 'flex-start' }]}>
+
+          <CustomInput
+            callBack={(value: string) => {
+                            setDescription(value);
+                        }}
+            clearButtonMode={false}
+            imagePlaceholder={description_img}
+            label='Description'
+            multiline={true}
+            styleContainer={styles.description}
+            value={description}
           />
         </View>
       </Animated.View>
     ),
-    [],
+    [mode],
   );
 
   const disabledButton = useMemo(() => {
@@ -152,10 +199,18 @@ export default function HomeScreen() {
     return null;
   }, [data]);
 
+  const scrollEnabled = useMemo(() => {
+    if (mode === 'edit' || mode === 'play') {
+      return false;
+    }
+    return true;
+  }, [mode]);
+
   return (
     <Animated.View style={[styles.container]}>
       <StatusBar backgroundColor={BG_MAIN} />
       <View style={styles.dinamicBlockWrapper}>
+
         <Animated.View
           style={[
                         remove ? styles.dinamicBlock : styles.center,
@@ -169,12 +224,11 @@ export default function HomeScreen() {
         >
           {remove ? form : <TaskTime />}
         </Animated.View>
-
         <Carousel
           activeAnimationType='decay'
           activeSlideAlignment='center'
           containerCustomStyle={{
-                        display: !remove ? 'flex' : 'none',
+                        display: remove ? 'none' : 'flex',
                         marginTop: 33,
                         opacity: opacityCarousel,
                     }}
@@ -187,6 +241,7 @@ export default function HomeScreen() {
                         setCurrentIndex(index);
                     }}
           renderItem={e => (<CardForSlider data={e} />)}
+          scrollEnabled={scrollEnabled}
           sliderWidth={sliderWidth}
           useScrollView={true}
           windowSize={1}
@@ -202,3 +257,4 @@ export default function HomeScreen() {
     </Animated.View>
   );
 }
+export default React.memo(HomeScreen);

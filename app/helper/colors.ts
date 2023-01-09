@@ -9,3 +9,5 @@ export const DEFAULT_BUTTON = '#00FFC2';
 export const WHITE = '#FFFFFF';
 export const TRANSPARENT = 'transparent';
 export const NAV_BAR_BG_COLOR = '#1710265a';
+export const INPUT_BG_COLOR = '#D9D9D9';
+

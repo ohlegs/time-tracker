@@ -1,39 +1,45 @@
-import { View, Text, TextInput, Image, TouchableOpacity } from 'react-native';
+import { View, TextInput, Image, TouchableOpacity } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import styles from './styles';
 import { close } from './../../helper/path';
+import { BG_GREY } from '../../helper/colors';
 
 interface Props {
-  nameInput: string
-  imagePlaceholder: any
+  label: string
   callBack?: CallableFunction
+  styleContainer?: object
+  clearButtonMode?: boolean
+  multiline?: boolean
+  value?: string | undefined
 }
 
 export default function CustomInput(props: Props) {
-  const [valueInput, setValueInput] = useState<string | null>(null);
+  const [valueInput, setValueInput] = useState<string | null>(props?.value);
   useEffect(() => {
     if (props.callBack) {
       props.callBack(valueInput);
     }
   }, [valueInput]);
+
   return (
     <View style={styles.container}>
-      <Text style={styles.inputName}>{props.nameInput}</Text>
-      <View style={styles.wrapperTextInput}>
+      <View style={[styles.wrapperTextInput, props?.styleContainer]}>
         <View style={styles.wrapper}>
-          <Image
-            source={props.imagePlaceholder}
-            style={styles.mainImage}
-          />
           <TextInput
+            multiline={props?.multiline}
             onChangeText={(value) => {
               setValueInput(value);
             }}
-            style={styles.input}
+            placeholder={props?.label}
+            placeholderTextColor={BG_GREY}
+            scrollEnabled={true}
+            style={[styles.input, props.label === 'Description' && { maxHeight: '100%' }]}
+
             value={valueInput}
           />
         </View>
-        <TouchableOpacity
+        <View style={styles.separator} />
+        { props?.clearButtonMode && <TouchableOpacity
           onPress={() => {
             setValueInput('');
           }}
@@ -43,7 +49,7 @@ export default function CustomInput(props: Props) {
             source={close}
             style={styles.cancelImage}
           />
-        </TouchableOpacity>
+        </TouchableOpacity>}
       </View>
     </View>
   );

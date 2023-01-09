@@ -1,5 +1,5 @@
 /* eslint-disable no-shadow */
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { View, Image, TouchableOpacity } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import styles from './styles';
 import { hot_priority, low_priority, normal_priority } from '../../helper/path';
@@ -7,6 +7,8 @@ import { BG_GREY } from './../../helper/colors';
 
 interface Props {
     callBack: CallableFunction;
+    styleContainer: object;
+    value: number;
 }
 
 enum Priority {
@@ -16,7 +18,7 @@ enum Priority {
 }
 
 export default function Switcher(props: Props) {
-  const [select, setSelect] = useState<number | null>();
+  const [select, setSelect] = useState<number | null>(props?.value || 1);
   const handlePress = (priority: Priority) => {
     if (priority === Priority.low) {
       setSelect(1);
@@ -36,8 +38,7 @@ export default function Switcher(props: Props) {
   }, [select]);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.inputName}>{' '}</Text>
+    <View style={[styles.container, props?.styleContainer]}>
       <View style={styles.wrapperSwitcher}>
         <TouchableOpacity
           onPress={() => handlePress(Priority.low)}

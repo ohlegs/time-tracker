@@ -10,7 +10,7 @@ import { BlurView } from '@react-native-community/blur';
 import { useSelector } from 'react-redux';
 import styles from './styles';
 import HomeScreen from './../../screens/Main/Main';
-import { icon_add, icon_history } from '../../helper/path';
+import { icon_history, icon_list } from '../../helper/path';
 import History from './../../screens/History/Main';
 import { DEFAULT_BUTTON } from '../../helper/colors';
 
@@ -25,7 +25,7 @@ export default function NavBottomBar() {
   const fadeOut = (value: number): void => {
     Animated.timing(fadeAnim, {
       toValue: value - 20,
-      duration: 100,
+      duration: 0,
       useNativeDriver: false,
     }).start();
   };
@@ -95,7 +95,7 @@ export default function NavBottomBar() {
                                             setPositionAdd(pageX);
                                         });
                                 }}
-                            source={icon_add}
+                            source={icon_list}
                             style={styles.add_icon}
                           />
                         ),

@@ -5,6 +5,7 @@ export interface ModeState {
         | 'cancel'
         | 'save'
         | 'edit'
+        | 'update'
         | 'pause'
         | 'play'
         | 'lock_close'
